@@ -3,6 +3,9 @@ function fetchData(url) {
         url: url,
         type: 'get',
         dataType: 'json',
+        error: function(request, textStatus, errorThrown) {
+            console.error('Request failed: ' + textStatus + ', Response code: ' + request.status);
+        }
     }).then(function (data){
         dataResult = data;
         return dataResult;
