@@ -1,0 +1,31 @@
+body {
+    background: var(--gray-100, #F7FAFC);
+}
+
+nav {
+    width: 1440px;
+    height: 86px;
+    flex-shrink: 0;
+}
+
+.card h2 {
+    color: var(--base-color-dark, #1C1C1C);
+    font-feature-settings: 'clig' off, 'liga' off;
+
+    /* Text-base */
+    font-family: Inter;
+    font-size: 16px;
+    font-style: normal;
+    font-weight: 400;
+    line-height: normal;
+}
+
+.card img {
+    display: flex;
+    width: 140px;
+    height: 140px;
+    padding: 9.333px 19.289px;
+    justify-content: center;
+    align-items: center;
+    flex-shrink: 0;
+}
