@@ -1,5 +1,5 @@
 body {
-    background: var(--gray-100, #F7FAFC);
+    background: var(--gray-100, #f8fafc);
 }
 
 nav {
@@ -22,10 +22,19 @@ nav {
 
 .card img {
     display: flex;
-    width: 140px;
-    height: 140px;
-    padding: 9.333px 19.289px;
+    width: 230px;
+    height: 230px;
+    padding: 13.289px 13.289px 14.311px 14.311px;
     justify-content: center;
     align-items: center;
     flex-shrink: 0;
+}
+
+.card {
+    width: 295px;
+    height: 405px;
+    flex-shrink: 0;
+    background: #ffffff;
+    stroke-width: 1px;
+    stroke: var(--gray-300, #DEE2E7);
 }

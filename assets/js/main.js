@@ -20,6 +20,33 @@ function getProducts(){
     })
 }
 
-getProducts().then(function (data){
-    console.log(data);
-})
+function renderItems(){
+    getProducts().then(function (data){
+        console.log(data);
+        var cnt = 0;
+        for (item of data) {
+
+            $('<div>', {
+                'class': 'card',
+                'id': 'card' + cnt
+            }).appendTo('#container');
+
+            $('<img>', {
+                'src': item.thumbnail
+            }).appendTo('#card' + cnt);
+
+            $('<h2>', {
+               'text': item.title
+            }).appendTo('#card' + cnt);
+
+            $('<h2>', {
+                'text': '$' + item.price
+            }).appendTo('#card' + cnt);
+
+            cnt = cnt + 1;
+
+        }
+    })
+}
+
+renderItems();
