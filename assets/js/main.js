@@ -49,4 +49,22 @@ function renderItems(){
     })
 }
 
+function pagination(page, objectCount){
+    getProducts().then(function (data){
+        var objects = [];
+        var dataSize = data.length;
+        var startObjectIndex = objectCount * (page - 1);
+        var endObjectIndex = objectCount * page;
+        for(let i = startObjectIndex; i < endObjectIndex; i++)
+        {
+           objects.push(data[i]);
+        }
+        console.log(objects);
+
+    });
+
+}
+
 renderItems();
+
+pagination(2, 10);
