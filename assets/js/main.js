@@ -34,7 +34,7 @@ function renderItems(){
             for(var j = i; j < i + 3; j++) {
                 var item = data[j];
                 $('<div>', {
-                    'class': 'card column',
+                    'class': 'card col',
                     'id': 'card' + cnt
                 }).appendTo('#row' + rowCnt);
 
