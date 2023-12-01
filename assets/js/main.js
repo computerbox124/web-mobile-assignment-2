@@ -24,26 +24,34 @@ function renderItems(){
     getProducts().then(function (data){
         console.log(data);
         var cnt = 0;
-        for (item of data) {
-
+        var rowCnt = 0;
+        for (var i = 0; i < data.length; i+=3) {
+            rowCnt += 1
             $('<div>', {
-                'class': 'card',
-                'id': 'card' + cnt
+                'class': 'row',
+                'id': 'row' + rowCnt
             }).appendTo('#container');
+            for(var j = i; j < i + 3; j++) {
+                var item = data[j];
+                $('<div>', {
+                    'class': 'card column',
+                    'id': 'card' + cnt
+                }).appendTo('#row' + rowCnt);
 
-            $('<img>', {
-                'src': item.thumbnail
-            }).appendTo('#card' + cnt);
+                $('<img>', {
+                    'src': item.thumbnail
+                }).appendTo('#card' + cnt);
 
-            $('<h2>', {
-               'text': item.title
-            }).appendTo('#card' + cnt);
+                $('<h2>', {
+                    'text': item.title
+                }).appendTo('#card' + cnt);
 
-            $('<h2>', {
-                'text': '$' + item.price
-            }).appendTo('#card' + cnt);
+                $('<h2>', {
+                    'text': '$' + item.price
+                }).appendTo('#card' + cnt);
 
-            cnt = cnt + 1;
+                cnt = cnt + 1;
+            }
 
         }
     })
@@ -66,5 +74,3 @@ function pagination(page, objectCount){
 }
 
 renderItems();
-
-pagination(2, 10);
