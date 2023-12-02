@@ -46,9 +46,23 @@ function renderItems(){
                     'text': item.title
                 }).appendTo('#card' + cnt);
 
-                $('<h2>', {
-                    'text': '$' + item.price
+                $('<span>', {
+                    'text': 'Category: ' + item.category
                 }).appendTo('#card' + cnt);
+
+                $('<h2>', {
+                    'text': 'Price: $' + item.price
+                }).appendTo('#card' + cnt);
+
+                $('<span>', {
+                    'text': 'Discount: %' + item.discountPercentage
+                }).appendTo('#card' + cnt);
+
+                $('<span>', {
+                    'text': 'Stock: ' + item.stock
+                }).appendTo('#card' + cnt);
+
+
 
                 cnt = cnt + 1;
             }
