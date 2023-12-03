@@ -2,10 +2,8 @@ body {
     background: var(--gray-100, #f8fafc);
 }
 
-nav {
-    width: 1440px;
-    height: 86px;
-    flex-shrink: 0;
+#navbarDiv li a {
+    color: white;
 }
 
 .card h2 {
