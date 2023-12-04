@@ -20,19 +20,50 @@ function getProducts(){
     })
 }
 
-function renderItems(){
+var pageActive = 1;
+
+function renderPagination(pages) {
+    for(let i = 1; i <= pages; i++){
+        var cName = 'page' + i;
+        if(i === pageActive){
+            cName += ' active';
+        }
+        $('<li>', {
+            'class': cName,
+            'id': 'page' + i
+        }).appendTo('#pagination');
+
+        $('<a>', {
+            'class': 'page-link',
+        }).text(i).appendTo('#page' + i);
+    }
+
+}
+
+function pagination(page, objectCount){
     getProducts().then(function (data){
-        console.log(data);
+        var pageCounts = data.length / 12 + (data.length % 12 ? 1 : 0);
+        renderPagination(pageCounts);
+
+
+        var objects = [];
+        var startObjectIndex = objectCount * (page - 1);
+        var endObjectIndex = objectCount * page;
+        for(let i = startObjectIndex; i < endObjectIndex; i++)
+        {
+           objects.push(data[i]);
+        }
+
         var cnt = 0;
         var rowCnt = 0;
-        for (var i = 0; i < data.length; i+=3) {
+        for (var i = 0; i < objects.length; i+=3) {
             rowCnt += 1
             $('<div>', {
                 'class': 'row',
                 'id': 'row' + rowCnt
             }).appendTo('#container');
-            for(var j = i; j < i + 3; j++) {
-                var item = data[j];
+            for(var j = i; j < Math.min(i + 3, objects.length); j++) {
+                var item = objects[j];
                 $('<div>', {
                     'class': 'card col',
                     'id': 'card' + cnt
@@ -68,23 +99,9 @@ function renderItems(){
             }
 
         }
-    })
-}
-
-function pagination(page, objectCount){
-    getProducts().then(function (data){
-        var objects = [];
-        var dataSize = data.length;
-        var startObjectIndex = objectCount * (page - 1);
-        var endObjectIndex = objectCount * page;
-        for(let i = startObjectIndex; i < endObjectIndex; i++)
-        {
-           objects.push(data[i]);
-        }
-        console.log(objects);
 
     });
 
 }
 
-renderItems();
+pagination(1, 12);
