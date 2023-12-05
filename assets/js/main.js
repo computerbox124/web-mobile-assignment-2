@@ -1,6 +1,7 @@
 const API = 'https://dummyjson.com/products'
 
 function fetchData(url) {
+    console.log(url);
     return $.ajax({
         url: url,
         type: 'get',
@@ -82,7 +83,7 @@ function pagination(page, objectCount, link){
 
     pageActive = page;
     let skipObjects = (page - 1) * objectCount;
-    const paginationAPI = link + '?limit=' + objectCount + '&skip=' + skipObjects
+    const paginationAPI = link + 'limit=' + objectCount + '&skip=' + skipObjects
     getProducts(paginationAPI).then(function (data){
         var dataEl = data.products;
         var objects = [];
@@ -155,6 +156,10 @@ function pagination(page, objectCount, link){
 function renderCategories(){
    $("#SelectFilter").empty();
   getCategories().then(function (data){
+      $("<option>", {
+          'value': 'all',
+          'text': 'All'
+      }).appendTo('#SelectFilter');
       for(var object of data){
           $("<option>", {
               'value': object,
@@ -163,21 +168,28 @@ function renderCategories(){
       }
 
       $("#SelectFilter").on('change', function() {
-          if(this.value === "all")generatePage(API);
-          else generatePage(API + "/category/" + this.value);
+          if(this.value === "all")generatePage(API, 1);
+          else generatePage(API + "/category/" + this.value, 1);
       })
 
 
   });
 }
 
-function generatePage(link){
+function generatePage(link, sig){
     renderPagination(12, link);
-    pagination(1, 12, link);
+    pagination(1, 12, link + ( sig ? "?" : '&'));
 
 }
 
+
+$( "#search" ).bind( "change", function(e) {
+    var keyword = e.target.value;
+    generatePage(API + '/search?q=' + keyword, 0);
+});
+
+
 $(document).ready(function(){
     renderCategories();
-    generatePage(API);
+    generatePage(API, 1);
 });
