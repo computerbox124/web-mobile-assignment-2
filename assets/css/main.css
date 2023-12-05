@@ -32,3 +32,12 @@ body {
     margin-right: 20px;
     margin-bottom: 20px;
 }
+
+.form-control-butter {
+    transition: background-color 0.3s ease;
+}
+
+.form-control-butter:hover,
+.form-control-butter:focus {
+    background-color: #ffecb3; /* Butter-like color */
+}

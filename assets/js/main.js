@@ -14,6 +14,13 @@ function fetchData(url) {
 
 }
 
+function getCategories(){
+    const APICategories = API + '/categories';
+    return fetchData(APICategories).then(function (data){
+        return data
+    });
+}
+
 function getProducts(link){
     return fetchData(link).then( function(data){
         return {
@@ -28,8 +35,10 @@ function getProducts(link){
 
 var pageActive = 1;
 
-function renderPagination(objCounts) {
-   getProducts(API).then(function (data){
+function renderPagination(objCounts, link) {
+
+   getProducts(link).then(function (data){
+       $("#pagination").empty();
         const total = data.total;
         var pages = Math.floor(total / objCounts) + (total % objCounts ? 1 : 0);
         for (let i = 1; i <= pages; i++) {
@@ -45,7 +54,7 @@ function renderPagination(objCounts) {
             $('<a>', {
                 'class': 'page-link',
             }).text(i).on('click', function () {
-                pagination(i, objCounts)
+                pagination(i, objCounts, link)
             }).appendTo('#page' + i);
         }
     });
@@ -63,7 +72,7 @@ function getHTMLId(element) {
     return res
 }
 
-function pagination(page, objectCount){
+function pagination(page, objectCount, link){
     $("#container").empty();
     var pageId = 'page' + page;
     var pageIdActive = 'page' + pageActive;
@@ -73,17 +82,16 @@ function pagination(page, objectCount){
 
     pageActive = page;
     let skipObjects = (page - 1) * objectCount;
-    const paginationAPI = API + '?limit=' + objectCount + '&skip=' + skipObjects
+    const paginationAPI = link + '?limit=' + objectCount + '&skip=' + skipObjects
     getProducts(paginationAPI).then(function (data){
-        data = data.products;
+        var dataEl = data.products;
         var objects = [];
-        for(let i = 0; i < data.length; i++)
+        for(let i = 0; i < dataEl.length; i++)
         {
-            objects.push(data[i]);
+            objects.push(dataEl[i]);
         }
-
-        var cnt = 0;
-        var rowCnt = 0;
+        let cnt = 0;
+        let rowCnt = 0;
         for (var i = 0; i < objects.length; i+=3) {
             rowCnt += 1
             $('<div>', {
@@ -96,13 +104,13 @@ function pagination(page, objectCount){
                     'class': 'card col',
                     'id': 'card' + item.id
                 })
-                    .on('click', function (){ clickedProduct(getHTMLId(this.id)); }).appendTo('#row' + rowCnt)
+                    .on('click', function (){ clickedProduct(getHTMLId(this.id)); })
                     .on('mouseenter',function(){
                         this.style = '' +
                             'border-color: black;' +
                             'border-style: groove; ' +
                             'border-width: 4px';})
-                    .on('mouseleave',function(){ this.style = '';});
+                    .on('mouseleave',function(){ this.style = '';}).appendTo('#row' + rowCnt);
 
                 $('<img>', {
                     'src': item.thumbnail,
@@ -144,8 +152,32 @@ function pagination(page, objectCount){
 
 }
 
+function renderCategories(){
+   $("#SelectFilter").empty();
+  getCategories().then(function (data){
+      for(var object of data){
+          $("<option>", {
+              'value': object,
+              'text': object
+          }).appendTo('#SelectFilter');
+      }
+
+      $("#SelectFilter").on('change', function() {
+          if(this.value === "all")generatePage(API);
+          else generatePage(API + "/category/" + this.value);
+      })
+
+
+  });
+}
+
+function generatePage(link){
+    renderPagination(12, link);
+    pagination(1, 12, link);
+
+}
 
 $(document).ready(function(){
-    renderPagination(12);
-    pagination(1, 12);
+    renderCategories();
+    generatePage(API);
 });
