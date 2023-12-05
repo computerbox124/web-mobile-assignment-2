@@ -1,0 +1,89 @@
+<!-- Assignment 2 of Web & Mobile Course - ADA University
+Code Author: Huseyn Hajiyev
+
+1) API integration (20pts)
+Use JavaScript to fetch data from dummyjson.com about products from / products endpoint.
+Handle any potential errors during the fetch operation.
+2) Data display (1) (20 pts)
+Display the data on the home web page.
+Each product should include the title, price, discount, category, and stock as well as the thumbnail.
+Ensure the display is well-formatted and readable.
+3) Data display (2) (20 pts)
+When a product is clicked a new product info page is opened with the detailed information
+ as well as the gallery of the product.
+4) Data display (3)
+On the home page, provide the following features
+Search for a keyword (it can be a part of title, desc, or even category) (15pts)
+5) Filter based on the given category (all categories are to be provided a sa select box
+ and choosing any category from the list filters the list of all the products) (15 pts)
+Use API documentation to explore available ones and their usage.
+Apply pagination (Bonus) (10 pts)
+If the result of any response holds more than 10 objects, show only 10 products.
+Implement pagination navigation at the bottom of the list.
+-->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Huseyn shop</title>
+  <link rel="stylesheet" href="assets/css/main.css" />
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous">
+
+</head>
+<body>
+<nav class="navbar navbar-expand-sm navbar-light bg-dark">
+  <img width=130px height=80px class="d-line-block align-top" src="assets/img/shop.jpg"/>
+  <a class="navbar-brand" style="color: white;">Hus Shop</a>
+  <input placeholder="Search" />
+  <button type="button"
+          data-bs-toggle="collapse"
+          class="navbar-toggler"
+          data-bs-target="#navbarDiv"
+          aria-controls="navbarDiv"
+          aria-expanded="false"
+          aria-label="Toggle navigation"
+          style="color:white;"
+  >Menu</button>
+  <div class="collapse navbar-collapse" id="navbarDiv">
+    <ul class="navbar-nav mr-auto">
+      <li class="nav-item active">
+        <a href="index.html" class="nav-link">Home</a>
+      </li>
+      <li class="nav-item">
+        <a href="#" class="nav-link">Categories</a>
+      </li>
+    </ul>
+  </div>
+
+</nav>
+<div id="container" class="container">
+   <div class="card" id="card">
+     <img id="card-img" class="card-img-top" src="#" alt="Product image">
+
+     <div id="card-body" class="card-body">
+       <h5 id="card-title" class="card-title"></h5>
+       <p id="card-text" class="card-text"></p>
+       <div id="card-gallery" class="row">
+
+
+       </div>
+       <p id="card-price" class="card-text"></p>
+       <p id="card-discount" class="card-text"></p>
+       <p id="card-stock" class="card-text"></p>
+     </div>
+   </div>
+
+</div>
+<ul class="pagination d-flex justify-content-center" id="pagination">
+
+</ul>
+<footer>
+
+</footer>
+
+
+</body>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-C6RzsynM9kWDrMNeT87bh95OGNyZPhcTNXj1NW7RuBCsyN/o0jlpcV8Qyq46cDfL" crossorigin="anonymous"></script>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
+<script src="assets/js/detailed.js" type="module"></script>
+</html>

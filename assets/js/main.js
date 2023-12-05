@@ -1,7 +1,6 @@
 const API = 'https://dummyjson.com/products'
 
 function fetchData(url) {
-    console.log(url);
     return $.ajax({
         url: url,
         type: 'get',
@@ -10,8 +9,7 @@ function fetchData(url) {
             console.error('Request failed: ' + textStatus + ', Response code: ' + request.status);
         }
     }).then(function (data){
-        dataResult = data;
-        return dataResult;
+        return data;
     });
 
 }
@@ -26,16 +24,7 @@ function getProducts(link){
     })
 }
 
-function getProduct(link){
-    return fetchData(link).then( function(data){
-        console.log(data);
-        return {
-            data
-        };
 
-    })
-
-}
 
 var pageActive = 1;
 
@@ -62,8 +51,17 @@ function renderPagination(objCounts) {
     });
 }
 
-renderPagination(12);
+function clickedProduct(id){
+    window.open(`./detailed.html?product=${id}`, '_blank');
+}
 
+function getHTMLId(element) {
+    var res = '';
+    for(var i = 4; i < element.length; i++){
+        res += element[i];
+    }
+    return res
+}
 
 function pagination(page, objectCount){
     $("#container").empty();
@@ -81,7 +79,7 @@ function pagination(page, objectCount){
         var objects = [];
         for(let i = 0; i < data.length; i++)
         {
-           objects.push(data[i]);
+            objects.push(data[i]);
         }
 
         var cnt = 0;
@@ -96,33 +94,45 @@ function pagination(page, objectCount){
                 var item = objects[j];
                 $('<div>', {
                     'class': 'card col',
-                    'id': 'card' + cnt
-                }).appendTo('#row' + rowCnt);
+                    'id': 'card' + item.id
+                })
+                    .on('click', function (){ clickedProduct(getHTMLId(this.id)); }).appendTo('#row' + rowCnt)
+                    .on('mouseenter',function(){
+                        this.style = '' +
+                            'border-color: black;' +
+                            'border-style: groove; ' +
+                            'border-width: 4px';})
+                    .on('mouseleave',function(){ this.style = '';});
 
                 $('<img>', {
-                    'src': item.thumbnail
-                }).appendTo('#card' + cnt);
+                    'src': item.thumbnail,
+                    'class': 'card-img rounded mx-auto d-block'
+                }).appendTo('#card' + item.id);
 
-                $('<h2>', {
-                    'text': item.title
-                }).appendTo('#card' + cnt);
+                $('<h5>', {
+                    'text': item.title,
+                    'class': 'card-title'
+                }).appendTo('#card' + item.id);
 
                 $('<span>', {
+                    'class': 'card-text',
                     'text': 'Category: ' + item.category
-                }).appendTo('#card' + cnt);
+                }).appendTo('#card' + item.id);
 
                 $('<h2>', {
-                    'text': 'Price: $' + item.price
-                }).appendTo('#card' + cnt);
+                    'text': 'Price: $' + item.price,
+                    'class': 'card-text'
+                }).appendTo('#card' + item.id);
 
                 $('<span>', {
-                    'text': 'Discount: %' + item.discountPercentage
-                }).appendTo('#card' + cnt);
+                    'text': 'Discount: ' + item.discountPercentage + '%',
+                    'class': 'card-text'
+                }).appendTo('#card' + item.id);
 
                 $('<span>', {
-                    'text': 'Stock: ' + item.stock
-                }).appendTo('#card' + cnt);
-
+                    'text': 'Stock: ' + item.stock + ' items left!',
+                    'class': 'card-text'
+                }).appendTo('#card' + item.id);
 
 
                 cnt = cnt + 1;
@@ -134,4 +144,8 @@ function pagination(page, objectCount){
 
 }
 
-pagination(1, 12);
+
+$(document).ready(function(){
+    renderPagination(12);
+    pagination(1, 12);
+});
