@@ -1,6 +1,6 @@
 
 const API = 'https://dummyjson.com/products/'
-
+//Support function for fetchign data
 function fetchData(url) {
     return $.ajax({
         url: url,
@@ -14,7 +14,7 @@ function fetchData(url) {
     });
 
 }
-
+//Support function for getting product
 function getProduct(link){
     return fetchData(link).then( function(data){
         return {
@@ -25,6 +25,7 @@ function getProduct(link){
 
 }
 
+//Support function for parsing query parameters
 function getQueryParams(url){
     var ind = 0;
     for(ind = 0; ind < url.length; ind++)
@@ -38,6 +39,7 @@ function getQueryParams(url){
     return objectID;
 }
 
+//When page is opened it renders needed information in card div
 $(document ).ready(function() {
   var objectID = getQueryParams(document.URL);
   getProduct(API + objectID).then(function(data){

@@ -86,7 +86,7 @@ function renderPagination(objCounts, link) {
     });
 }
 
-// Component function which renders the all projects according pagination configuration
+// Component function which renders the all products according pagination configuration
 function pagination(page, objectCount, link){
     $("#container").empty();
     var pageId = 'page' + page;
