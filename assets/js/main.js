@@ -1,4 +1,7 @@
+const API = 'https://dummyjson.com/products'
+
 function fetchData(url) {
+    console.log(url);
     return $.ajax({
         url: url,
         type: 'get',
@@ -13,43 +16,70 @@ function fetchData(url) {
 
 }
 
-function getProducts(){
-    return fetchData('https://dummyjson.com/products').then( function(data){
-        return data.products;
+function getProducts(link){
+    return fetchData(link).then( function(data){
+        return {
+            'products': data.products,
+            'total': data.total
+        };
 
     })
 }
 
-var pageActive = 1;
+function getProduct(link){
+    return fetchData(link).then( function(data){
+        console.log(data);
+        return {
+            data
+        };
 
-function renderPagination(pages) {
-    for(let i = 1; i <= pages; i++){
-        var cName = 'page' + i;
-        if(i === pageActive){
-            cName += ' active';
-        }
-        $('<li>', {
-            'class': cName,
-            'id': 'page' + i
-        }).appendTo('#pagination');
-
-        $('<a>', {
-            'class': 'page-link',
-        }).text(i).appendTo('#page' + i);
-    }
+    })
 
 }
 
+var pageActive = 1;
+
+function renderPagination(objCounts) {
+   getProducts(API).then(function (data){
+        const total = data.total;
+        var pages = Math.floor(total / objCounts) + (total % objCounts ? 1 : 0);
+        for (let i = 1; i <= pages; i++) {
+            var cName = 'page' + i;
+            if (i === pageActive) {
+                cName += ' active';
+            }
+            $('<li>', {
+                'class': cName,
+                'id': 'page' + i
+            }).appendTo('#pagination');
+
+            $('<a>', {
+                'class': 'page-link',
+            }).text(i).on('click', function () {
+                pagination(i, objCounts)
+            }).appendTo('#page' + i);
+        }
+    });
+}
+
+renderPagination(12);
+
+
 function pagination(page, objectCount){
-    getProducts().then(function (data){
-        var pageCounts = data.length / 12 + (data.length % 12 ? 1 : 0);
-        renderPagination(pageCounts);
+    $("#container").empty();
+    var pageId = 'page' + page;
+    var pageIdActive = 'page' + pageActive;
 
+    $('#' + pageIdActive).removeClass('active');
+    $('#' + pageId).addClass('active');
 
+    pageActive = page;
+    let skipObjects = (page - 1) * objectCount;
+    const paginationAPI = API + '?limit=' + objectCount + '&skip=' + skipObjects
+    getProducts(paginationAPI).then(function (data){
+        data = data.products;
         var objects = [];
-        var startObjectIndex = objectCount * (page - 1);
-        var endObjectIndex = objectCount * page;
-        for(let i = startObjectIndex; i < endObjectIndex; i++)
+        for(let i = 0; i < data.length; i++)
         {
            objects.push(data[i]);
         }
